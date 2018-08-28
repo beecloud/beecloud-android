@@ -1,6 +1,6 @@
 /**
  * BCPayReqParams.java
- *
+ * <p>
  * Created by xuanzhui on 2015/7/27.
  * Copyright (c) 2015 BeeCloud. All rights reserved.
  */
@@ -117,6 +117,8 @@ public class BCPayReqParams extends BCReqParams {
      */
     public String returnUrl;
 
+    public String partitionId;
+
     /**
      * 构造函数
      * @param channel       支付渠道类型
@@ -130,7 +132,7 @@ public class BCPayReqParams extends BCReqParams {
      * 将实例转化成符合后台请求的键值对
      * 用于以json方式post请求
      */
-    public Map<String, Object> transToBillReqMapParams(){
+    public Map<String, Object> transToBillReqMapParams() {
         Map<String, Object> params = new HashMap<String, Object>(8);
 
         params.put("app_id", getAppId());
@@ -150,7 +152,7 @@ public class BCPayReqParams extends BCReqParams {
         }
 
         if (accessToken != null)
-            params.put("access_token",accessToken);
+            params.put("access_token", accessToken);
 
         if (currency != null)
             params.put("currency", currency);
@@ -158,10 +160,10 @@ public class BCPayReqParams extends BCReqParams {
         if (notifyUrl != null)
             params.put("notify_url", notifyUrl);
 
-        if (optional !=null && optional.size() != 0)
+        if (optional != null && optional.size() != 0)
             params.put("optional", optional);
 
-        if (analysis !=null && analysis.size() != 0)
+        if (analysis != null && analysis.size() != 0)
             params.put("analysis", analysis);
 
         Map<String, String> bcAnalysis = new HashMap<>();
@@ -180,14 +182,17 @@ public class BCPayReqParams extends BCReqParams {
         if (billTimeout != null)
             params.put("bill_timeout", billTimeout);
 
-        if (authCode!=null && authCode.length() != 0)
+        if (authCode != null && authCode.length() != 0)
             params.put("auth_code", authCode);
 
-        if (terminalId!=null && terminalId.length() != 0)
+        if (terminalId != null && terminalId.length() != 0)
             params.put("terminal_id", terminalId);
 
-        if (storeId!=null && storeId.length() != 0)
+        if (storeId != null && storeId.length() != 0)
             params.put("store_id", storeId);
+
+        if (partitionId != null && partitionId.length() != 0)
+            params.put("partition_id", partitionId);
 
         return params;
     }

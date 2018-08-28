@@ -207,6 +207,8 @@ public class PayViaAuthCodeActivity extends Activity {
                 // 商家自定义的消费者Id，传入将分析用户行为
                 payParam.buyerId = "merchant-buyer-id";
 
+                payParam.partitionId = "e24b5dc3-e79f-4f7d-9f85-fc4f2c2f7bbd";
+
                 BCOfflinePay.getInstance().reqOfflinePayAsync(
                         payParam,
                         callback);

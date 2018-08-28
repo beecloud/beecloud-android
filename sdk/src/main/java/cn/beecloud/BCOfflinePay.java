@@ -298,7 +298,7 @@ public class BCOfflinePay {
                                    final String authCode, final String terminalId,
                                    final String storeId, final BCCallback callback) {
         reqOfflinePayAsync(channelType, billTitle, billTotalFee, billNum, null, null, null,
-                optional, null, authCode, terminalId, storeId, callback);
+                null, optional, null, authCode, terminalId, storeId, callback);
     }
 
     // 线下支付总接口
@@ -306,6 +306,7 @@ public class BCOfflinePay {
                                     final String billTitle, final Integer billTotalFee,
                                     final String billNum, final String notifyUrl,
                                     final String buyerId, final String couponId,
+                                    final String partitionId,
                                     final Map<String, String> optional,
                                     final Map<String, String> analysis,
                                     final String authCode, final String terminalId,
@@ -372,6 +373,7 @@ public class BCOfflinePay {
 
                 parameters.buyerId = buyerId;
                 parameters.couponId = couponId;
+                parameters.partitionId = partitionId;
                 parameters.analysis = analysis;
 
                 String qrCodeReqURL = BCHttpClientUtil.getBillOfflinePayURL();
@@ -448,6 +450,7 @@ public class BCOfflinePay {
                 payParam.notifyUrl,
                 payParam.buyerId,
                 payParam.couponId,
+                payParam.partitionId,
                 payParam.optional,
                 payParam.analysis,
                 payParam.authCode,
@@ -635,6 +638,8 @@ public class BCOfflinePay {
          * 若系统商接入, storeId(商户的门店编号)必填, terminalId(机具终端编号)选填
          */
         public String storeId;
+
+        public String partitionId;
 
         /**
          * 扩展参数，用于分析
