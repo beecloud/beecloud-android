@@ -5,6 +5,7 @@
 /build
 /captures
 demo_eclipse/bin/*
+demo/release/*
 
 *.zip
 /*.apk

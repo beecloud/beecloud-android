@@ -177,7 +177,8 @@ public class BCPay {
     public static boolean isWXAppInstalledAndSupported() {
         boolean isWXAppInstalledAndSupported = false;
         if (wxAPI != null) {
-            isWXAppInstalledAndSupported = wxAPI.isWXAppInstalled() && wxAPI.isWXAppSupportAPI();
+            isWXAppInstalledAndSupported = wxAPI.isWXAppInstalled();
+            // wxAPI.isWXAppSupportAPI() no longer exists
         }
         return isWXAppInstalledAndSupported;
     }

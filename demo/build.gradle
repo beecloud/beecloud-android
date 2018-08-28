@@ -10,8 +10,8 @@ android {
         applicationId "cn.beecloud.demo"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 39
-        versionName "2.10.0"
+        versionCode 40
+        versionName "2.10.1"
     }
 
     dexOptions {
