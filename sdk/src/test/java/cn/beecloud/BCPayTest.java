@@ -23,9 +23,7 @@ import java.util.concurrent.TimeUnit;
 import cn.beecloud.async.BCCallback;
 import cn.beecloud.async.BCResult;
 import cn.beecloud.entity.BCPayResult;
-import cn.beecloud.entity.BCQRCodeResult;
 import cn.beecloud.entity.BCReqParams;
-import cn.beecloud.entity.BCRestfulCommonResult;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({BCHttpClientUtil.class, PayTask.class, BCCache.class})

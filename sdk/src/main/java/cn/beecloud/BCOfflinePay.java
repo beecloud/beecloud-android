@@ -22,7 +22,6 @@ import com.google.zxing.common.BitMatrix;
 
 import java.lang.reflect.Type;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import cn.beecloud.async.BCCallback;

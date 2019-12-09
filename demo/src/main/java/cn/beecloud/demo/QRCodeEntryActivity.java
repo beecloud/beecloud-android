@@ -26,7 +26,6 @@ import cn.beecloud.async.BCResult;
 import cn.beecloud.demo.util.BillUtils;
 import cn.beecloud.demo.util.DisplayUtils;
 import cn.beecloud.entity.BCPayResult;
-import cn.beecloud.entity.BCQRCodeResult;
 import cn.beecloud.entity.BCReqParams;
 
 /**
