@@ -4,14 +4,18 @@ def keystorePropertiesFile = rootProject.file("keystore.properties");
 def keystoreProperties = new Properties()
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "cn.beecloud.demo"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 40
         versionName "2.10.1"
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
     }
 
     dexOptions {
@@ -40,7 +44,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':sdk')
-    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':sdk')
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 }

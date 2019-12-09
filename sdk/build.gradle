@@ -5,10 +5,10 @@ android {
         config {
         }
     }
-    compileSdkVersion 23
+    compileSdkVersion 28
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 40
         versionName "2.10.1"
     }
@@ -34,14 +34,14 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:23.4.0'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
-    compile 'com.google.code.gson:gson:2.8.2'
-    compile 'com.google.zxing:core:3.3.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.zxing:core:3.3.1'
 
     // 注意：因为微信SDK从4.0.2版本开始已改用gradle形式，后续Android开发工具包将不再更新，请开发者尽快改用gradle方式编译、更新微信SDK
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0'
 
     /*  以下标识
     //ali
@@ -56,15 +56,15 @@ dependencies {
     */
 
     //网络请求库
-    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
 
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.10.8"
-    testCompile ('org.powermock:powermock-api-mockito:1.6.6') {
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:1.10.8"
+    testImplementation ('org.powermock:powermock-api-mockito:1.6.6') {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-    testCompile ('org.powermock:powermock-module-junit4:1.6.6') {
+    testImplementation ('org.powermock:powermock-module-junit4:1.6.6') {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
@@ -108,11 +108,13 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 android.libraryVariants.all { variant ->
     task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        doFirst {
+            classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
+        }
         //title = "$name $version API"
         title = "BeeCloud Android SDK API"
         description "Generates Javadoc for $variant.name."
         source = variant.javaCompile.source
-        classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
         options {
             encoding 'UTF-8'
             charSet 'UTF-8'
