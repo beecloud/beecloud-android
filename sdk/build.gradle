@@ -85,7 +85,7 @@ task makeJar(type:org.gradle.api.tasks.bundling.Jar) {
     //指定生成的jar名
     baseName 'beecloud-2.10.2'
     //从哪里打包class文件
-    from('build/intermediates/classes/release/cn/beecloud')
+    from('build/intermediates/javac/release/compileReleaseJavaWithJavac/classes/cn/beecloud')
     //打包到jar后的目录结构
     into('cn/beecloud')
     //去掉不需要打包的目录和文件
