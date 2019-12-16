@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 40
-        versionName "2.10.1"
+        versionCode 41
+        versionName "2.10.2"
     }
 
     //对于import module方式，compileOptions可以直接删掉
@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.1'
 
     // 注意：因为微信SDK从4.0.2版本开始已改用gradle形式，后续Android开发工具包将不再更新，请开发者尽快改用gradle方式编译、更新微信SDK
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.4.0'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
     /*  以下标识
     //ali
@@ -83,7 +83,7 @@ task clearJar(type: Delete) {
 
 task makeJar(type:org.gradle.api.tasks.bundling.Jar) {
     //指定生成的jar名
-    baseName 'beecloud-2.10.1'
+    baseName 'beecloud-2.10.2'
     //从哪里打包class文件
     from('build/intermediates/classes/release/cn/beecloud')
     //打包到jar后的目录结构

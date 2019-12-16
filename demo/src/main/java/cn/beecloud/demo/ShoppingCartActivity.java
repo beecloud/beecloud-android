@@ -135,8 +135,8 @@ public class ShoppingCartActivity extends Activity {
 
         // 推荐在主Activity或application里的onCreate函数中初始化BeeCloud.
 //        BeeCloud.setSandbox(true);
-        BeeCloud.setAppIdAndSecret("you app id",
-                "you app secret");
+        BeeCloud.setAppIdAndSecret("beacfdf5-badd-4a11-9b23-9ef3801732d1",
+                "0fa599d9-b0ae-41b3-85de-d3153809004d");
 
         // 如果用到微信支付，在用到微信支付的Activity的onCreate函数里调用以下函数.
         // 第二个参数需要换成你自己的微信AppID.
@@ -189,7 +189,7 @@ public class ShoppingCartActivity extends Activity {
                             payParams.billTitle = "安卓微信支付测试";   //订单标题
                             payParams.billTotalFee = 11;    //订单金额(分)
                             payParams.billNum = BillUtils.genBillNum();  //订单流水号
-                            payParams.couponId = "bbbf835d-f6b0-484f-bb6e-8e6082d4a35f";    // 优惠券ID
+//                            payParams.couponId = "bbbf835d-f6b0-484f-bb6e-8e6082d4a35f";    // 优惠券ID
                             payParams.optional = mapOptional;            //扩展参数(可以null)
 
                             BCPay.getInstance(ShoppingCartActivity.this).reqPaymentAsync(
