@@ -189,7 +189,7 @@ public class ShoppingCartActivity extends Activity {
                             payParams.billTitle = "安卓微信支付测试";   //订单标题
                             payParams.billTotalFee = 11;    //订单金额(分)
                             payParams.billNum = BillUtils.genBillNum();  //订单流水号
-                            payParams.couponId = "bbbf835d-f6b0-484f-bb6e-8e6082d4a35f";    // 优惠券ID
+//                            payParams.couponId = "bbbf835d-f6b0-484f-bb6e-8e6082d4a35f";    // 优惠券ID
                             payParams.optional = mapOptional;            //扩展参数(可以null)
 
                             BCPay.getInstance(ShoppingCartActivity.this).reqPaymentAsync(
