@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/beecloud/beecloud-android.svg)](https://travis-ci.org/beecloud/beecloud-android) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg) ![version](https://img.shields.io/badge/version-v2.10.2-blue.svg)
 
-### 本分支保留eclipse demo和sdk，不再更新！！！
+### 本分支保留对eclipse的支持，但是不再更新！！！
 
 ## 简介
 
