@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/beecloud/beecloud-android.svg)](https://travis-ci.org/beecloud/beecloud-android) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg) ![version](https://img.shields.io/badge/version-v2.10.2-blue.svg)
 
+### 本分支保留eclipse demo和sdk，不再更新！！！
+
 ## 简介
 
 本项目的官方GitHub地址是 [https://github.com/beecloud/beecloud-android](https://github.com/beecloud/beecloud-android)
