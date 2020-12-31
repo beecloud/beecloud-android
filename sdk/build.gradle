@@ -91,31 +91,30 @@ task makeJar(type:org.gradle.api.tasks.bundling.Jar) {
 makeJar.dependsOn(clearJar, build)
 
 //以下用于生成javadoc
-//gradle generateReleaseJavaDoc --info
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-    }
+// ./gradlew sdk:javadoc
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+
+    title = "BeeCloud Android SDK API"
+
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
 }
 
-android.libraryVariants.all { variant ->
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        doFirst {
-            classpath = files(variant.javaCompile.classpath.files, project.android.getBootClasspath())
-        }
-        //title = "$name $version API"
-        title = "BeeCloud Android SDK API"
-        description "Generates Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        options {
-            encoding 'UTF-8'
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api/"
-            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
-        }
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
+afterEvaluate {
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompileProvider.get().classpath.files
+    })
+}
+
+javadoc {
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
     }
 }

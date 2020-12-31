@@ -114,16 +114,9 @@ BCPay.initWechatPay(ShoppingCartActivity.this, "wxf1aa465362b4c8f1");
     android:exported="true"
     android:targetActivity="cn.beecloud.BCWechatPaymentActivity" />
 ```
-> 对于支付宝，需要添加  
+> 对于支付宝，不需要添加  
 
-```java
-<activity
-    android:name="com.alipay.sdk.app.H5PayActivity"
-    android:configChanges="orientation|keyboardHidden|navigation"
-    android:exported="false"
-    android:screenOrientation="behind"
-    android:windowSoftInputMode="adjustResize|stateHidden" />
-```
+
 > 对于银联，需要添加  
 
 ```java
