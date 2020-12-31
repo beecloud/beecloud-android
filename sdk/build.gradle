@@ -7,10 +7,10 @@ android {
     }
     compileSdkVersion 28
     defaultConfig {
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 41
-        versionName "2.10.2"
+        versionName "2.11.0"
     }
 
     //对于import module方式，compileOptions可以直接删掉
@@ -34,37 +34,31 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    /*  以下标识
+    //union pay
+    libs/UPPayAssistEx.jar
+    libs/UPPayPluginEx.jar
+    */
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //ali
+    implementation(name:'alipaysdk-noutdid-15.8.00.201112210139', ext:'aar')
 
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.google.zxing:core:3.3.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.zxing:core:3.3.3'
 
     // 注意：因为微信SDK从4.0.2版本开始已改用gradle形式，后续Android开发工具包将不再更新，请开发者尽快改用gradle方式编译、更新微信SDK
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
-    /*  以下标识
-    //ali
-    libs/alipaySdk-xxx.jar.jar
-
-    //union pay
-    libs/UPPayAssistEx.jar
-    libs/UPPayPluginEx.jar
-
-    //baidu
-    Cashier_SDK-v4.2.0.jar
-    */
-
     //网络请求库
-    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:1.10.8"
-    testImplementation ('org.powermock:powermock-api-mockito:1.6.6') {
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation "org.mockito:mockito-core:3.6.28"
+    testImplementation ('org.powermock:powermock-api-mockito2:2.0.9') {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
-    testImplementation ('org.powermock:powermock-module-junit4:1.6.6') {
+    testImplementation ('org.powermock:powermock-module-junit4:2.0.9') {
         exclude module: 'hamcrest-core'
         exclude module: 'objenesis'
     }
@@ -83,9 +77,9 @@ task clearJar(type: Delete) {
 
 task makeJar(type:org.gradle.api.tasks.bundling.Jar) {
     //指定生成的jar名
-    baseName 'beecloud-2.10.2'
+    baseName 'beecloud-2.11.0'
     //从哪里打包class文件
-    from('build/intermediates/javac/release/compileReleaseJavaWithJavac/classes/cn/beecloud')
+    from('build/intermediates/javac/release/classes/cn/beecloud')
     //打包到jar后的目录结构
     into('cn/beecloud')
     //去掉不需要打包的目录和文件

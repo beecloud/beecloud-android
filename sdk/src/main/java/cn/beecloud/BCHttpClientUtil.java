@@ -268,7 +268,7 @@ class BCHttpClientUtil {
                 .connectTimeout(BCCache.getInstance().connectTimeout, TimeUnit.MILLISECONDS)
                 .build();
 
-        RequestBody body = RequestBody.create(JSON, jsonStr);
+        RequestBody body = RequestBody.create(jsonStr, JSON);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)

@@ -135,26 +135,26 @@ public class ShoppingCartActivity extends Activity {
 
         // 推荐在主Activity或application里的onCreate函数中初始化BeeCloud.
 //        BeeCloud.setSandbox(true);
-        BeeCloud.setAppIdAndSecret("you app id",
-                "you app secret");
+        BeeCloud.setAppIdAndSecret("your app id",
+                "your app secret");
 
         // 如果用到微信支付，在用到微信支付的Activity的onCreate函数里调用以下函数.
         // 第二个参数需要换成你自己的微信AppID.
-        String initInfo = BCPay.initWechatPay(ShoppingCartActivity.this, "wxf1aa465362b4c8f1");
+        String initInfo = BCPay.initWechatPay(ShoppingCartActivity.this, "your wx app id");
         if (initInfo != null) {
             Toast.makeText(this, "微信初始化失败：" + initInfo, Toast.LENGTH_LONG).show();
         }
 
         payMethod = (ListView) this.findViewById(R.id.payMethod);
         Integer[] payIcons = new Integer[]{R.drawable.wechat, R.drawable.alipay,
-                R.drawable.unionpay, R.drawable.beecloud_logo, R.drawable.baidupay,
+                R.drawable.unionpay, R.drawable.beecloud_logo,
                 R.drawable.rss, R.drawable.wechat, R.drawable.wechat,
                 R.drawable.alipay,R.drawable.scan};
         final String[] payNames = new String[]{"微信支付", "支付宝支付", "银联在线", "BeeCloud支付",
-                "百度钱包", "订阅支付", "微信WAP支付", "BeeCloud微信支付",
+                "订阅支付", "微信WAP支付", "BeeCloud微信支付",
                 "BeeCloud支付宝APP支付", "二维码支付"};
         String[] payDescs = new String[]{"使用微信支付，以人民币CNY计费", "使用支付宝支付，以人民币CNY计费",
-                "使用银联在线支付，以人民币CNY计费", "通过BeeCloud快捷支付", "使用百度钱包支付，以人民币CNY计费",
+                "使用银联在线支付，以人民币CNY计费", "通过BeeCloud快捷支付",
                 "通过订阅计划，自动缴费", "使用微信WAP支付，以人民币CNY计费",
                 "使用BeeCloud专用微信支付，以人民币CNY计费", "使用支付宝ISV渠道支付，以人民币CNY计费",
                 "通过扫描二维码支付"};
@@ -180,6 +180,8 @@ public class ShoppingCartActivity extends Activity {
                         Map<String, String> mapOptional = new HashMap<String, String>();
 
                         mapOptional.put("testkey1", "测试value值1");
+                        // 如果开通了微信分账
+//                        mapOptional.put("profit_sharing", "Y");
 
                         if (BCPay.isWXAppInstalledAndSupported() &&
                                 BCPay.isWXPaySupported()) {
@@ -187,7 +189,7 @@ public class ShoppingCartActivity extends Activity {
                             BCPay.PayParams payParams = new BCPay.PayParams();
                             payParams.channelType = BCReqParams.BCChannelTypes.WX_APP;
                             payParams.billTitle = "安卓微信支付测试";   //订单标题
-                            payParams.billTotalFee = 11;    //订单金额(分)
+                            payParams.billTotalFee = 2;    //订单金额(分)
                             payParams.billNum = BillUtils.genBillNum();  //订单流水号
 //                            payParams.couponId = "bbbf835d-f6b0-484f-bb6e-8e6082d4a35f";    // 优惠券ID
                             payParams.optional = mapOptional;            //扩展参数(可以null)
@@ -268,56 +270,7 @@ public class ShoppingCartActivity extends Activity {
                                 bcCallback);
 
                         break;
-                    case 4: //通过百度钱包支付
-                    {
-                        loadingDialog.show();
-
-                        Map<String, String> mapOptional = new HashMap<String, String>();
-                        mapOptional = new HashMap<>();
-                        mapOptional.put("goods desc", "商品详细描述");
-
-                        Map<String, String> analysis;
-
-                        //通过创建PayParam的方式发起支付
-                        //你也可以通过reqBaiduPaymentAsync的方式支付
-                        BCPay.PayParams payParam = new BCPay.PayParams();
-
-                        /*
-                        *  支付渠道，此处以百度钱包为例，实际支付允许
-                        *  BCReqParams.BCChannelTypes.WX_APP，
-                        *  BCReqParams.BCChannelTypes.ALI_APP，
-                        *  BCReqParams.BCChannelTypes.UN_APP，
-                        *  BCReqParams.BCChannelTypes.BD_APP，
-                        *  BCReqParams.BCChannelTypes.PAYPAL_SANDBOX，
-                        *  BCReqParams.BCChannelTypes.PAYPAL_LIVE
-                        */
-                        payParam.channelType = BCReqParams.BCChannelTypes.BD_APP;
-
-                        //商品描述, 32个字节内, 汉字以2个字节计
-                        payParam.billTitle = "安卓Baidu钱包支付测试";
-
-                        //支付金额，以分为单位，必须是正整数
-                        payParam.billTotalFee = 1;
-
-                        //商户自定义订单号
-                        payParam.billNum = BillUtils.genBillNum();
-
-                        //订单超时时间，以秒为单位，建议不小于360，可以不设置
-                        payParam.billTimeout = 360;
-
-                        //扩展参数，可以传入任意数量的key/value对来补充对业务逻辑的需求，可以不设置
-                        payParam.optional = mapOptional;
-
-                        //扩展参数，用于后期分析，目前只支持key为category的分类分析，可以不设置
-                        analysis = new HashMap<String, String>();
-                        analysis.put("category", "BD");
-                        payParam.analysis = analysis;
-
-                        BCPay.getInstance(ShoppingCartActivity.this).reqPaymentAsync(payParam,
-                                bcCallback);
-                        break;
-                    }
-                    case 5: {//订阅支付
+                    case 4: {//订阅支付
                         /*
                          进入订阅支付的activity
                          */
@@ -325,7 +278,7 @@ public class ShoppingCartActivity extends Activity {
                         startActivity(intent);
                         break;
                     }
-                    case 6: {
+                    case 5: {
                         BCPay.PayParams payParam = new BCPay.PayParams();
 
                         // 微信WAP
@@ -345,7 +298,7 @@ public class ShoppingCartActivity extends Activity {
 
                         break;
                     }
-                    case 7: {
+                    case 6: {
                         BCPay.PayParams payParam = new BCPay.PayParams();
 
                         // BeeCloud微信APP
@@ -362,7 +315,7 @@ public class ShoppingCartActivity extends Activity {
                         BCPay.getInstance(ShoppingCartActivity.this).reqPaymentAsync(payParam, bcCallback);
                         break;
                     }
-                    case 8: {
+                    case 7: {
                         BCPay.PayParams payParam = new BCPay.PayParams();
 
                         // BeeCLoud支付宝APP
@@ -379,7 +332,7 @@ public class ShoppingCartActivity extends Activity {
                         BCPay.getInstance(ShoppingCartActivity.this).reqPaymentAsync(payParam, bcCallback);
                         break;
                     }
-                    case 9: {
+                    case 8: {
                         Intent intent = new Intent(ShoppingCartActivity.this, QRCodeEntryActivity.class);
                         startActivity(intent);
                     }
@@ -442,9 +395,6 @@ public class ShoppingCartActivity extends Activity {
         super.onDestroy();
         //使用微信的，在initWechatPay的activity结束时detach
         BCPay.detachWechat();
-
-        //使用百度支付的，在activity结束时detach
-        BCPay.detachBaiduPay();
 
         //清理当前的activity引用
         BCPay.clear();

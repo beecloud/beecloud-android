@@ -1,6 +1,6 @@
 ## BeeCloud Android SDK (Open Source)
 
-[![Build Status](https://travis-ci.org/beecloud/beecloud-android.svg)](https://travis-ci.org/beecloud/beecloud-android) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg) ![version](https://img.shields.io/badge/version-v2.10.2-blue.svg)
+[![Build Status](https://travis-ci.org/beecloud/beecloud-android.svg)](https://travis-ci.org/beecloud/beecloud-android) ![license](https://img.shields.io/badge/license-MIT-brightgreen.svg) ![version](https://img.shields.io/badge/version-v2.11.0-blue.svg)
 
 ## 简介
 
@@ -11,7 +11,6 @@ SDK支持以下支付渠道:
  * 微信APP
  * 支付宝APP
  * 银联在线APP
- * 百度钱包
 
 包含预退款、订阅支付、鉴权和相关的查询功能。
 还提供了线下收款功能(包括微信扫码、微信刷卡、支付宝扫码、支付宝条形码)，订单状态的查询以及订单撤销。 
@@ -47,17 +46,12 @@ SDK支持以下支付渠道:
 `zxing-x.x.x.jar`为生成二维码必须引入的jar，  
 微信支付(`WX_APP`和`BC_WX_APP `)需要引入`wechat-sdk-android-with-mta-x.x.x.jar`，  
 支付宝(`ALI_APP`和`BC_ALI_APP`)需要引入`alipaySdk-xxx.jar`，  
-银联需要引入`UPPayAssistEx.jar`、`UPPayPluginExPro.jar`，  
-百度钱包支付需要引入`Cashier_SDK-v4.2.0.jar`，  
+银联需要引入`UPPayAssistEx.jar`、`UPPayPluginExPro.jar`， 
 最后添加`beecloud android sdk`：`beecloud-x.x.x.jar`，和其同级目录下依赖的`okhttp-x.x.x.jar`，`okio-x.x.x.jar`
 
 2.对于微信APP支付，需要注意你的`AndroidManifest.xml`中`package`需要和微信平台创建的移动应用`应用包名`保持一致，否则会遭遇[`一般错误`](http://help.beecloud.cn/hc/kb/article/157111/)  
 
 3.对于银联支付需要将`beecloud-android\sdk\manualres\unionpay\data.bin`引入你的工程`assets`目录下；同时根据需求将同目录下的so文件添加到工程  
-
-4.对于百度钱包支付，需要
->1. 将`beecloud-android\sdk\manualres\baidupay\res`添加到你的`res`目录下；
->2. 另外，对于使用`Android Studio`的用户，需要将`beecloud-android\sdk\manualres\baidupay\`目录下的`armeabi`文件夹拷贝到`src\main\jniLibs`目录下，如果没有`jniLibs`目录，请手动创建；对用使用`Eclipse`的用户，需要将`beecloud-android\sdk\manualres\baidupay\`目录下的`armeabi`文件夹拷贝到`libs`目录下。  
 
 
 ## 使用方法
@@ -95,10 +89,6 @@ BCPay.initWechatPay(ShoppingCartActivity.this, "wxf1aa465362b4c8f1");
 <uses-permission android:name="android.permission.NFC" />
 <uses-feature android:name="android.hardware.nfc.hce"/>
 
-<!-- for Baidu -->
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.WRITE_SETTINGS" />
-<uses-permission android:name="android.permission.READ_SMS" />
 ```
 
 ### 3. 在`AndroidManifest.xml`中注册`activity`
@@ -163,8 +153,6 @@ BCPay.initWechatPay(ShoppingCartActivity.this, "wxf1aa465362b4c8f1");
     android:windowSoftInputMode="adjustResize"/>
 ```
 
-> 对于百度钱包，由于需要添加的activity数量众多，请参考demo中的AndroidManifest.xml  
-
 > 对于微信wap，需要添加  
 
 ```java
@@ -182,7 +170,7 @@ BCPay.initWechatPay(ShoppingCartActivity.this, "wxf1aa465362b4c8f1");
 
 通过`BCPay`的实例，以`reqPaymentAsync`方法发起所有支持的支付请求，该方法的调用请参考demo支付示例，BCPay.PayParams参数请参阅[API](https://beecloud.cn/doc/api/beecloud-android/cn/beecloud/BCPay.PayParams.html)。  
 
-参数中channelType可以是`WX_APP`(微信APP)、`ALI_APP`(支付宝APP)、`UN_APP`(银联APP)、`BD_APP`(百度钱包APP)、`BC_APP`(BeePay快捷APP)、`BC_WX_APP`(BeePay微信APP)、`BC_WX_WAP`(BeePay微信WAP)、`BC_ALI_APP`(BeePay支付宝APP)    
+参数中channelType可以是`WX_APP`(微信APP)、`ALI_APP`(支付宝APP)、`UN_APP`(银联APP)、`BC_APP`(BeePay快捷APP)、`BC_WX_APP`(BeePay微信APP)、`BC_WX_WAP`(BeePay微信WAP)、`BC_ALI_APP`(BeePay支付宝APP)    
 
 参数依次为
 > payParam        BCPay.PayParams类型  
@@ -693,15 +681,13 @@ BCValidationUtil.verifyCardFactors(
 
   
 ## Demo
-考虑到个人的开发习惯，本项目提供了`Android Studio`和`Eclipse ADT`两种工程的`demo`，为了使demo顺利运行，请注意以下细节
->1. 对于使用`Android Studio`的开发人员，下载源码后可以将`demo_eclipse`移除，`Import Project`的时候选择`beecloud-android`，`sdk`为`demo`的依赖`model`，`gradle`会自动关联。
->2. 对于使用`Eclipse ADT`的开发人员，`Import Project`的时候选择`beecloud-android`下的`demo_eclipse`，该`demo`下面已经添加所有需要的`jar`。
+使用`Android Studio`的开发人员，`Import Project`的时候选择`beecloud-android`，`sdk`为`demo`的依赖`model`，`gradle`会自动关联。
 
 ## ProGuard
 请根据自己引进的jar做增删  
 
 ```
-# 第三方库的申明，注意在Android Studio中不需要 
+# 第三方库的申明
 
 # BeeCloud及依赖jar  
 -libraryjars libs/beecloud-x.x.x.jar  
@@ -718,16 +704,10 @@ BCValidationUtil.verifyCardFactors(
 -libraryjars libs/UPPayAssistEx.jar  
 -libraryjars libs/UPPayPluginExPro.jar  
 
-# 百度  
--libraryjars libs/Cashier_SDK-v4.2.0.jar  
-
-
-# 以下是Android Studio和Eclipse都必须的
 
 # BeeCloud  
 -dontwarn cn.beecloud.**  
 -dontwarn com.alipay.**  
--dontwarn com.baidu.**  
 -dontwarn com.tencent.**  
 
 # 保留类签名声明  
@@ -745,10 +725,6 @@ BCValidationUtil.verifyCardFactors(
 
 # 银联  
 -keep class com.unionpay.** { *; }  
-
-# 百度  
--keep class com.baidu.** { *; }  
--keep class com.dianxinos.** { *; }  
 
 -dontwarn okhttp3.**  
 -dontwarn okio.**  

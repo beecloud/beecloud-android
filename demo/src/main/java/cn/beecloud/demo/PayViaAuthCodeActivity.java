@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +44,7 @@ import cn.beecloud.entity.BCReqParams;
 
 public class PayViaAuthCodeActivity extends Activity {
     private static final String TAG = "PayViaAuthCodeActivity";
+    private static final int REQUEST_APP_INSTALL = 1111;
 
     private static final int REQ_OFF_PAY_SUCC = 1;
     private static final int NOTIFY_RESULT = 10;
@@ -156,6 +159,7 @@ public class PayViaAuthCodeActivity extends Activity {
                 Map<String, String> optional = new HashMap<String, String>();
                 optional.put("用途", "测试扫码支付");
                 optional.put("testEN", "value恩恩");
+//                optional.put("profit_sharing", "N");
 
                 BCCallback callback = new BCCallback() {     //回调入口
                     @Override
@@ -300,6 +304,10 @@ public class PayViaAuthCodeActivity extends Activity {
                 // else continue with any other code you need in the method
                 Toast.makeText(PayViaAuthCodeActivity.this, "无法获取收款码，请重试", Toast.LENGTH_LONG).show();
             }
+        } else if (requestCode == REQUEST_APP_INSTALL) {
+            if (resultCode == Activity.RESULT_OK) {
+                installScannerPlugin();
+            }
         }
     }
 
@@ -335,15 +343,32 @@ public class PayViaAuthCodeActivity extends Activity {
     }
 
     private void installScannerPlugin() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            boolean haveInstallPermission = getPackageManager().canRequestPackageInstalls();
+            if (!haveInstallPermission) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, REQUEST_APP_INSTALL);
+                return;
+            }
+        }
+
+        File rootPath = getExternalCacheDir();
+        if (rootPath == null) {
+            Toast.makeText(this, "无法安装扫描控件", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "无法安装扫描控件");
+            return;
+        }
+        String cacheFilePath = rootPath.getAbsolutePath() + "/BarcodeScanner.apk";
+
         AssetManager assetManager = getAssets();
 
         InputStream in;
+        File file = new File(cacheFilePath);
         OutputStream out;
 
         try {
             in = assetManager.open("BarcodeScanner.apk");
-            out = new FileOutputStream(Environment.getExternalStorageDirectory()
-                    + File.separator + "BarcodeScanner.apk");
+            out = new FileOutputStream(file);
 
             byte[] buffer = new byte[1024];
 
@@ -357,17 +382,25 @@ public class PayViaAuthCodeActivity extends Activity {
             out.flush();
             out.close();
 
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-
-            intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory()
-                            + File.separator + "BarcodeScanner.apk")),
-                    "application/vnd.android.package-archive");
-
-            startActivity(intent);
+            installApk(cacheFilePath);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void installApk(String fileName) {
+        final Intent install = new Intent(Intent.ACTION_VIEW);
+        install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        File apkFile = new File(fileName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(this, "cn.beecloud.demo.fileProvider", apkFile);
+            install.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
+        startActivity(install);
     }
 
     private boolean appInstalledOrNot(String uri) {

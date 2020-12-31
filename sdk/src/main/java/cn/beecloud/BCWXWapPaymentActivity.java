@@ -1,7 +1,6 @@
 package cn.beecloud;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -60,6 +60,7 @@ public class BCWXWapPaymentActivity extends Activity {
         webSettings.setBuiltInZoomControls(true);
 
         webView.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // 如下方案可在非微信内部WebView的H5页面中调出微信支付
@@ -90,11 +91,7 @@ public class BCWXWapPaymentActivity extends Activity {
             }
         }
 
-        final ProgressDialog loadingDialog = new ProgressDialog(this);
-        loadingDialog.setMessage("处理中，请稍候...");
-        loadingDialog.setIndeterminate(true);
-        loadingDialog.setCancelable(false);
-        loadingDialog.show();
+        Toast.makeText(this, "处理中，请稍候...", Toast.LENGTH_SHORT).show();
 
         BCCache.executorService.execute(new Runnable() {
             @Override
@@ -161,7 +158,6 @@ public class BCWXWapPaymentActivity extends Activity {
                     }
                 }
 
-                loadingDialog.dismiss();
                 finish();
             }
         });

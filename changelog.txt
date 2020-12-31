@@ -1,5 +1,10 @@
 BeeCloud Android SDK Changelog
 ==========================
+v2.11.0 2020年12月25日
+移除百度SDK
+master分支取消eclipse demo
+增加eclipse demo专用分支
+
 v2.10.2 2019年12月16日
 更新微信和支付宝最新sdk
 

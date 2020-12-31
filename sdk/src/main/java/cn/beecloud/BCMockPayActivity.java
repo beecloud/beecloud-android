@@ -1,12 +1,10 @@
 package cn.beecloud;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,10 +33,7 @@ public class BCMockPayActivity extends Activity {
     //支付订单的唯一标识符
     String id;
 
-    private ProgressDialog loadingDialog;
-
     @Override
-    @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -166,13 +161,7 @@ public class BCMockPayActivity extends Activity {
         shape.setCornerRadii(new float[]{8, 8, 8, 8, 8, 8, 8, 8});
         shape.setColor(mainOrange);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            //Android系统大于等于API16，使用setBackground
-            payButton.setBackground(shape);
-        } else {
-            //Android系统小于API16，使用setBackgroundDrawable
-            payButton.setBackgroundDrawable(shape);
-        }
+        payButton.setBackground(shape);
 
         layoutRoot.addView(payButton, buttonsLayoutParams);
 
@@ -197,11 +186,6 @@ public class BCMockPayActivity extends Activity {
         setExtraParams();
 
         initButtonBehaviors();
-
-        loadingDialog = new ProgressDialog(this);
-        loadingDialog.setMessage("处理中，请稍候...");
-        loadingDialog.setIndeterminate(true);
-        loadingDialog.setCancelable(true);
     }
 
     void setExtraParams() {
@@ -235,7 +219,8 @@ public class BCMockPayActivity extends Activity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.show();
+//                Toast.makeText(getApplicationContext(), "处理中，请稍候...", Toast.LENGTH_SHORT).show();
+
                 //发送模拟的异步通知
                 BCCache.executorService.execute(new Runnable() {
                     @Override
@@ -244,7 +229,6 @@ public class BCMockPayActivity extends Activity {
                                 + "/" + BCCache.getInstance().billID;
                         BCHttpClientUtil.Response response = BCHttpClientUtil.httpGet(notifyUrl);
 
-                        loadingDialog.dismiss();
                         if (response.code == 200 || (response.code >= 400 && response.code < 500)) {
                             String ret = response.content;
 
